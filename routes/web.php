@@ -14,3 +14,10 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/videos/create', 'VideoController@create')->name('videos.create');
+Route::post('/videos/store', 'VideoController@store')->name('videos.store');

@@ -69,7 +69,114 @@ class ratingController {
     }
 }
 
+class sampleFormCtrl {
+    constructor(sample_form) {
+        this.sample_form = sample_form;
+        this.registerSubmitListener();
+    }
+
+    registerSubmitListener() {
+        this.sample_form.addEventListener('submit', e => this.formSubmitted(e))
+    }
+
+    formSubmitted(event) {
+        event.preventDefault();
+        let form = event.target;
+        let valdation_ul = document.getElementById('validation-errors');
+        valdation_ul.innerHTML = '';
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        let formData = {
+            'code' : form.elements["code"].value,
+            'fullName' : form.elements["fullName"].value,
+            'email' : form.elements["email"].value,
+            'address' : form.elements["address"].value,
+            'cb1' : form.elements["cb1"].checked,
+            'cb2' : form.elements["cb2"].checked,
+            'cb3' : form.elements["cb3"].checked,
+        };
+        $.ajax({
+            type: 'POST',
+            url: '/sample/store',
+            data: formData,
+            dataType: 'json'
+        })
+            .done(function(data) {
+                console.log('done');
+                valdation_ul.innerHTML = '';
+                $('#spidifen-modal').modal('hide');
+                // $('#ty-form').modal('show');
+                let ty_form_controller = new tyFormCtrl(data.id);
+                console.log(data);
+        })
+            .fail(function(data) {
+                console.log('fail');
+                for(let key in data.responseJSON.errors) {
+                    valdation_ul.innerHTML += "<li>" + data.responseJSON.errors[key] + "</li>";
+                }
+        });
+    }
+}
+
+class tyFormCtrl {
+    constructor(sample_id) {
+        this.ty_form = document.getElementById('ty_form');
+        this.sampleRecipient_id = sample_id;
+        this.registerSubmitListener();
+        $('#ty-modal').modal('show');
+    }
+
+    registerSubmitListener() {
+        this.ty_form.addEventListener('submit', e => this.formSubmitted(e))
+    }
+
+    formSubmitted(event) {
+        event.preventDefault();
+        let form = event.target;
+        let q1_value = this.ty_form.elements["Q1"].value,
+            q2_value = this.ty_form.elements["Q2"].value;
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        let formData = {
+            'Q1' : q1_value,
+            'Q2' : q2_value,
+            'sampleRecipient_id' : this.sampleRecipient_id
+        };
+        // $.ajax({
+        //     type: 'POST',
+        //     url: '/sample/store',
+        //     data: formData,
+        //     dataType: 'json'
+        // })
+        //     .done(function(data) {
+        //         console.log('done');
+        //         valdation_ul.innerHTML = '';
+        //         $('#spidifen-modal').modal('hide');
+        //         console.log(data);
+        //     })
+        //     .fail(function(data) {
+        //         console.log('fail');
+        //         for(let key in data.responseJSON.errors) {
+        //             valdation_ul.innerHTML += "<li>" + data.responseJSON.errors[key] + "</li>";
+        //         }
+        //     });
+        console.log(formData);
+    }
+}
+
 window.addEventListener("load", function() {
     let hvid = document.getElementById("hvid"), hvid_controller;
     if(hvid) hvid_controller = new vidController(hvid);
+    let sample_form = document.getElementById('sample_form'), sf_controller;
+    if(sample_form) sf_controller = new sampleFormCtrl(sample_form);
 });

@@ -36920,10 +36920,141 @@ function () {
   return ratingController;
 }();
 
+var sampleFormCtrl =
+/*#__PURE__*/
+function () {
+  function sampleFormCtrl(sample_form) {
+    _classCallCheck(this, sampleFormCtrl);
+
+    this.sample_form = sample_form;
+    this.registerSubmitListener();
+  }
+
+  _createClass(sampleFormCtrl, [{
+    key: "registerSubmitListener",
+    value: function registerSubmitListener() {
+      var _this2 = this;
+
+      this.sample_form.addEventListener('submit', function (e) {
+        return _this2.formSubmitted(e);
+      });
+    }
+  }, {
+    key: "formSubmitted",
+    value: function formSubmitted(event) {
+      event.preventDefault();
+      var form = event.target;
+      var valdation_ul = document.getElementById('validation-errors');
+      valdation_ul.innerHTML = '';
+      $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      });
+      var formData = {
+        'code': form.elements["code"].value,
+        'fullName': form.elements["fullName"].value,
+        'email': form.elements["email"].value,
+        'address': form.elements["address"].value,
+        'cb1': form.elements["cb1"].checked,
+        'cb2': form.elements["cb2"].checked,
+        'cb3': form.elements["cb3"].checked
+      };
+      $.ajax({
+        type: 'POST',
+        url: '/sample/store',
+        data: formData,
+        dataType: 'json'
+      }).done(function (data) {
+        console.log('done');
+        valdation_ul.innerHTML = '';
+        $('#spidifen-modal').modal('hide'); // $('#ty-form').modal('show');
+
+        var ty_form_controller = new tyFormCtrl(data.id);
+        console.log(data);
+      }).fail(function (data) {
+        console.log('fail');
+
+        for (var key in data.responseJSON.errors) {
+          valdation_ul.innerHTML += "<li>" + data.responseJSON.errors[key] + "</li>";
+        }
+      });
+    }
+  }]);
+
+  return sampleFormCtrl;
+}();
+
+var tyFormCtrl =
+/*#__PURE__*/
+function () {
+  function tyFormCtrl(sample_id) {
+    _classCallCheck(this, tyFormCtrl);
+
+    this.ty_form = document.getElementById('ty_form');
+    this.sampleRecipient_id = sample_id;
+    this.registerSubmitListener();
+    $('#ty-modal').modal('show');
+  }
+
+  _createClass(tyFormCtrl, [{
+    key: "registerSubmitListener",
+    value: function registerSubmitListener() {
+      var _this3 = this;
+
+      this.ty_form.addEventListener('submit', function (e) {
+        return _this3.formSubmitted(e);
+      });
+    }
+  }, {
+    key: "formSubmitted",
+    value: function formSubmitted(event) {
+      event.preventDefault();
+      var form = event.target;
+      var q1_value = this.ty_form.elements["Q1"].value,
+          q2_value = this.ty_form.elements["Q2"].value;
+      $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      });
+      var formData = {
+        'Q1': q1_value,
+        'Q2': q2_value,
+        'sampleRecipient_id': this.sampleRecipient_id
+      }; // $.ajax({
+      //     type: 'POST',
+      //     url: '/sample/store',
+      //     data: formData,
+      //     dataType: 'json'
+      // })
+      //     .done(function(data) {
+      //         console.log('done');
+      //         valdation_ul.innerHTML = '';
+      //         $('#spidifen-modal').modal('hide');
+      //         console.log(data);
+      //     })
+      //     .fail(function(data) {
+      //         console.log('fail');
+      //         for(let key in data.responseJSON.errors) {
+      //             valdation_ul.innerHTML += "<li>" + data.responseJSON.errors[key] + "</li>";
+      //         }
+      //     });
+
+      console.log(formData);
+    }
+  }]);
+
+  return tyFormCtrl;
+}();
+
 window.addEventListener("load", function () {
   var hvid = document.getElementById("hvid"),
       hvid_controller;
   if (hvid) hvid_controller = new vidController(hvid);
+  var sample_form = document.getElementById('sample_form'),
+      sf_controller;
+  if (sample_form) sf_controller = new sampleFormCtrl(sample_form);
 });
 
 /***/ }),

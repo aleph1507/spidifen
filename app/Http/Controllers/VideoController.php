@@ -45,10 +45,11 @@ class VideoController extends Controller
         foreach(['dutch_video', 'french_video'] as $video) {
             if($request->hasFile($video)) {
                 $file = $request->file($video);
-                $request->file($video)->move(public_path() . '/videos/', $video . '.' . $file->getClientOriginalExtension());
                 $lang = explode('_', $video)[0];
                 if($prev_video = Video::where('lang', $lang)->first())
                     File::delete(public_path() . '/videos/' . $prev_video->dest);
+
+                $request->file($video)->move(public_path() . '/videos/', $video . '.' . $file->getClientOriginalExtension());
 
                 Video::updateOrCreate(['lang' => $lang], ['dest' => $video . '.' . $file->getClientOriginalExtension()]);
             }

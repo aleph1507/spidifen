@@ -15,10 +15,12 @@ class CreateRatingsTable extends Migration
     {
         Schema::create('ratings', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('user_id')->unsigned();
+            $table->integer('user_id')->unsigned()->nullable();
             $table->enum('lang', ['french', 'dutch']);
             $table->integer('rating')->unsigned();
             $table->longText('comment')->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
+            $table->foreign('lang')->references('lang')->on('videos')->onDelete('cascade');
             $table->timestamps();
         });
     }

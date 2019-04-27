@@ -15,7 +15,7 @@ class CreateVideosTable extends Migration
     {
         Schema::create('videos', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->enum('lang', ['french', 'dutch']);
+            $table->enum('lang', ['french', 'dutch'])->unique();
             $table->string('dest');
             $table->timestamps();
         });

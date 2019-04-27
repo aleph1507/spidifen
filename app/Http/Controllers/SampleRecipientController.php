@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Rating;
+use App\SampleRecipient;
 use Illuminate\Http\Request;
 
-class RatingController extends Controller
+class SampleRecipientController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -36,21 +36,26 @@ class RatingController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-           'lang' => 'required|in:french,dutch',
-           'rating' => 'required|integer|between:1,5',
-           'comment' => 'sometimes|string'
+            'code' => 'required|string',
+            'fullName' => 'required|string',
+            'email' => 'required|email',
+            'address' => 'required|string',
+            'cb1' => 'required|in:true,false',
+            'cb2' => 'sometimes|in:true,false',
+            'cb3' => 'sometimes|in:true,false',
         ]);
 
-        Rating::create(['user_id' => auth()->user()->id, 'lang' => $request->lang, 'rating' => $request->rating, 'comment' => $request->comment]);
+        return response()->json(SampleRecipient::create($request->all()));
+//        return response()->json($request->all());
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Rating  $rating
+     * @param  \App\SampleRecipient  $sampleRecipient
      * @return \Illuminate\Http\Response
      */
-    public function show(Rating $rating)
+    public function show(SampleRecipient $sampleRecipient)
     {
         //
     }
@@ -58,10 +63,10 @@ class RatingController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Rating  $rating
+     * @param  \App\SampleRecipient  $sampleRecipient
      * @return \Illuminate\Http\Response
      */
-    public function edit(Rating $rating)
+    public function edit(SampleRecipient $sampleRecipient)
     {
         //
     }
@@ -70,10 +75,10 @@ class RatingController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Rating  $rating
+     * @param  \App\SampleRecipient  $sampleRecipient
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Rating $rating)
+    public function update(Request $request, SampleRecipient $sampleRecipient)
     {
         //
     }
@@ -81,10 +86,10 @@ class RatingController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Rating  $rating
+     * @param  \App\SampleRecipient  $sampleRecipient
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Rating $rating)
+    public function destroy(SampleRecipient $sampleRecipient)
     {
         //
     }

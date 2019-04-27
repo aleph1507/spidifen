@@ -21,3 +21,5 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/videos/create', 'VideoController@create')->name('videos.create');
 Route::post('/videos/store', 'VideoController@store')->name('videos.store');
+Route::post('/rating/store', 'RatingController@store')->name('ratings.store');
+Route::post('/sample/store', 'SampleRecipientController@store')->name('sample.store');

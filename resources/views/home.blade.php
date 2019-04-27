@@ -20,9 +20,10 @@
                             <p>Your browser does not support the video element</p>
                         </video>
                         <div class="collapse" id="ratingsDiv">
-                            <form action="#">
+                            <form action="{{route('ratings.store')}}" method="POST">
                                 {{csrf_field()}}
                                 <input type="hidden" id="rating" name="rating">
+                                <input type="hidden" id="lang" name="lang" value="{{session('language')}}">
                                 <div class="mb-0 ml-4">
                                     <p class="">Rate this video:</p>
                                 </div>
@@ -48,6 +49,12 @@
                     @else
                         <p>No {{ucfirst(session('language'))}} video at this time.</p>
                     @endif
+                    <button class="btn btn-primary btn-lg mx-auto"
+                        data-toggle="modal" data-target="#spidifen-modal">
+                        I want to receive a SPIDIFEN SAMPLE
+                    </button>
+                    @include('partials._spidifen_sample_modal')
+                    @include('partials._thank_you_modal')
                 </div>
             </div>
         </div>

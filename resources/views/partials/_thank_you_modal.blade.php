@@ -13,7 +13,7 @@
                     <label for="Q!">Question 1</label>
                     <textarea name="Q2" id="Q2" class="form-control"></textarea>
                     <ul id="validation-errors"></ul>
-                    <input type="submit" id="submit" class="form-control">
+                    <input type="submit" id="submit" class="form-control" value="OK">
                 </form>
             </div>
             <div class="modal-footer">

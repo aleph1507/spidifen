@@ -65,6 +65,7 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
 //        dd($data);
+        session(['language' => $data['language']]);
         return User::create([
 //            'name' => $data['name'],
             'email' => $data['email'],

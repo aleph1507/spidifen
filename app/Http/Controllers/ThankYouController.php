@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\SampleRecipient;
+use App\ThankYou;
 use Illuminate\Http\Request;
 
-class SampleRecipientController extends Controller
+class ThankYouController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -36,25 +36,20 @@ class SampleRecipientController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'code' => 'required|string',
-            'fullName' => 'required|string',
-            'email' => 'required|email',
-            'address' => 'required|string',
-            'cb1' => 'required|in:true,false',
-            'cb2' => 'sometimes|in:true,false',
-            'cb3' => 'sometimes|in:true,false',
+            'sampleRecipient_id' => 'required',
+            'Q1' => 'required_without:Q2',
+            'Q2' => 'required_without:Q1'
         ]);
-
-        return response()->json(SampleRecipient::create($request->all()));
+        return ThankYou::create($request->all());
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\SampleRecipient  $sampleRecipient
+     * @param  \App\ThankYou  $thankYou
      * @return \Illuminate\Http\Response
      */
-    public function show(SampleRecipient $sampleRecipient)
+    public function show(ThankYou $thankYou)
     {
         //
     }
@@ -62,10 +57,10 @@ class SampleRecipientController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\SampleRecipient  $sampleRecipient
+     * @param  \App\ThankYou  $thankYou
      * @return \Illuminate\Http\Response
      */
-    public function edit(SampleRecipient $sampleRecipient)
+    public function edit(ThankYou $thankYou)
     {
         //
     }
@@ -74,10 +69,10 @@ class SampleRecipientController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\SampleRecipient  $sampleRecipient
+     * @param  \App\ThankYou  $thankYou
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, SampleRecipient $sampleRecipient)
+    public function update(Request $request, ThankYou $thankYou)
     {
         //
     }
@@ -85,10 +80,10 @@ class SampleRecipientController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\SampleRecipient  $sampleRecipient
+     * @param  \App\ThankYou  $thankYou
      * @return \Illuminate\Http\Response
      */
-    public function destroy(SampleRecipient $sampleRecipient)
+    public function destroy(ThankYou $thankYou)
     {
         //
     }

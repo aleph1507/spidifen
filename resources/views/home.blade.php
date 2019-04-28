@@ -20,7 +20,7 @@
                             <p>Your browser does not support the video element</p>
                         </video>
                         <div class="collapse" id="ratingsDiv">
-                            <form action="{{route('ratings.store')}}" method="POST">
+                            <form action="{{route('ratings.store')}}" method="POST" id="ratingsForm">
                                 {{csrf_field()}}
                                 <input type="hidden" id="rating" name="rating">
                                 <input type="hidden" id="lang" name="lang" value="{{session('language')}}">
@@ -43,7 +43,8 @@
                                 <div class="comment">
                                     <textarea name="comment" class="form-control" placeholder="Comment"></textarea>
                                 </div>
-                                <input type="submit" class="btn btn-outline-dark btn-block" value="Done">
+                                <ul id="rating-validation-errors"></ul>
+                                <input type="submit" class="btn btn-outline-dark btn-block" id="rating_done" value="Done">
                             </form>
                         </div>
                     @else

@@ -36869,7 +36869,6 @@ function () {
     this.video = video;
     this.ratingsDiv = document.getElementById("ratingsDiv");
     this.registerVideoEndedListener();
-    this.videoEnded();
   }
 
   _createClass(vidController, [{
@@ -36883,6 +36882,7 @@ function () {
       $(this.ratingsDiv).collapse('show');
       var ratings = document.getElementsByClassName('starRating');
       var rCtrl = new ratingController(ratings);
+      var ratingFormController = new ratingFormCtrl();
     }
   }]);
 
@@ -37018,34 +37018,97 @@ function () {
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
       });
-      var formData = {
-        'Q1': q1_value,
-        'Q2': q2_value,
-        'sampleRecipient_id': this.sampleRecipient_id
-      }; // $.ajax({
-      //     type: 'POST',
-      //     url: '/sample/store',
-      //     data: formData,
-      //     dataType: 'json'
-      // })
-      //     .done(function(data) {
-      //         console.log('done');
-      //         valdation_ul.innerHTML = '';
-      //         $('#spidifen-modal').modal('hide');
-      //         console.log(data);
-      //     })
-      //     .fail(function(data) {
-      //         console.log('fail');
-      //         for(let key in data.responseJSON.errors) {
-      //             valdation_ul.innerHTML += "<li>" + data.responseJSON.errors[key] + "</li>";
-      //         }
-      //     });
 
-      console.log(formData);
+      if (q1_value || q2_value) {
+        var formData = {
+          'Q1': q1_value,
+          'Q2': q2_value,
+          'sampleRecipient_id': this.sampleRecipient_id
+        };
+        $.ajax({
+          type: 'POST',
+          url: '/thankyou',
+          data: formData,
+          dataType: 'json'
+        }).done(function (data) {
+          console.log('done');
+          $('#ty-modal').modal('hide');
+          console.log(data);
+        }).fail(function (data) {
+          console.log('fail');
+
+          for (var key in data.responseJSON.errors) {
+            console.log(data.responseJSON.errors[key]);
+          }
+        });
+        console.log(formData);
+      } else {
+        $('#ty-modal').modal('hide');
+      }
     }
   }]);
 
   return tyFormCtrl;
+}();
+
+var ratingFormCtrl =
+/*#__PURE__*/
+function () {
+  function ratingFormCtrl(rating_form) {
+    _classCallCheck(this, ratingFormCtrl);
+
+    this.rating_form = document.getElementById('ratingsForm');
+    this.registerSubmitListener();
+  }
+
+  _createClass(ratingFormCtrl, [{
+    key: "registerSubmitListener",
+    value: function registerSubmitListener() {
+      var _this4 = this;
+
+      this.rating_form.addEventListener('submit', function (e) {
+        return _this4.formSubmitted(e);
+      });
+    }
+  }, {
+    key: "formSubmitted",
+    value: function formSubmitted(event) {
+      event.preventDefault();
+      var form = event.target;
+      var valdation_ul = document.getElementById('rating-validation-errors');
+      valdation_ul.innerHTML = '';
+      $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      });
+      var formData = {
+        'rating': form.elements["rating"].value,
+        'comment': form.elements["comment"].value,
+        'lang': form.elements["lang"].value
+      };
+      $.ajax({
+        type: 'POST',
+        url: '/rating/store',
+        data: formData,
+        dataType: 'json'
+      }).done(function (data) {
+        // console.log('done');
+        valdation_ul.innerHTML = ''; // console.log(data);
+
+        var submitBtn = document.getElementById('rating_done');
+        submitBtn.value = "Thank you";
+        submitBtn.disabled = true;
+      }).fail(function (data) {
+        // console.log('fail');
+        for (var key in data.responseJSON.errors) {
+          valdation_ul.innerHTML += "<li>" + data.responseJSON.errors[key] + "</li>";
+        }
+      });
+    }
+  }]);
+
+  return ratingFormCtrl;
 }();
 
 window.addEventListener("load", function () {

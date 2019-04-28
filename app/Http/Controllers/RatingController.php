@@ -38,10 +38,10 @@ class RatingController extends Controller
         $request->validate([
            'lang' => 'required|in:french,dutch',
            'rating' => 'required|integer|between:1,5',
-           'comment' => 'sometimes|string'
+           'comment' => 'sometimes|string|nullable'
         ]);
 
-        Rating::create(['user_id' => auth()->user()->id, 'lang' => $request->lang, 'rating' => $request->rating, 'comment' => $request->comment]);
+        return response()->json(Rating::updateOrCreate(['user_id' => auth()->user()->id], ['lang' => $request->lang, 'rating' => $request->rating, 'comment' => $request->comment]));
     }
 
     /**

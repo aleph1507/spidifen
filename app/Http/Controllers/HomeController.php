@@ -25,13 +25,8 @@ class HomeController extends Controller
     public function index()
     {
         $video = Video::where('lang', session('language'))->first();
-//        $filename = $video ? asset(public_path() . '/videos/' . $video->dest) : null;
         $filename = $video ? asset('/videos/' . $video->dest) : null;
         return view('home')->with(compact('filename'));
-//        $filename = $video ? $video->dest : null;
-//        return $filename ? 'true' : 'false';
-//        dd($filename);
-//        $video = session('language') == 'french' ? asset(public_path('/videos/french_video')) : asset('dutch_video');
-//        return view('home')->with(compact('video'));
+
     }
 }

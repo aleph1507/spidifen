@@ -9,8 +9,8 @@
                 <form action="#" id="sample_form">
                     {{csrf_field()}}
                     <input type="text" name="code" id="code" placeholder="Code" class="form-control" required>
-                    <input type="text" name="fullName" id="fullName" placeholder="Full Name" class="form-control" >
-                    <input type="text" name="email" id="email" placeholder="E-mail" class="form-control" required>
+                    <input type="text" name="fullName" id="fullName" placeholder="Full Name" class="form-control" required>
+                    <input type="email" name="email" id="email" placeholder="E-mail" class="form-control" required>
                     <input type="text" name="address" id="address" placeholder="Address" class="form-control" required>
                     <div class="cb1">
                         <label for="cb1">Checkbox 1 *</label>

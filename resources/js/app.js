@@ -38,7 +38,6 @@ class vidController {
        this.video = video;
        this.ratingsDiv = document.getElementById("ratingsDiv");
        this.registerVideoEndedListener();
-       this.videoEnded();
    }
 
    registerVideoEndedListener() {
@@ -49,6 +48,7 @@ class vidController {
        $(this.ratingsDiv).collapse('show');
        let ratings = document.getElementsByClassName('starRating');
        let rCtrl = new ratingController(ratings);
+       let ratingFormController = new ratingFormCtrl();
     }
 }
 
@@ -123,6 +123,7 @@ class sampleFormCtrl {
     }
 }
 
+
 class tyFormCtrl {
     constructor(sample_id) {
         this.ty_form = document.getElementById('ty_form');
@@ -132,7 +133,7 @@ class tyFormCtrl {
     }
 
     registerSubmitListener() {
-        this.ty_form.addEventListener('submit', e => this.formSubmitted(e))
+        this.ty_form.addEventListener('submit', e => this.formSubmitted(e));
     }
 
     formSubmitted(event) {
@@ -147,30 +148,84 @@ class tyFormCtrl {
             }
         });
 
+        if(q1_value || q2_value){
+            let formData = {
+                'Q1' : q1_value,
+                'Q2' : q2_value,
+                'sampleRecipient_id' : this.sampleRecipient_id
+            };
+            $.ajax({
+                type: 'POST',
+                url: '/thankyou',
+                data: formData,
+                dataType: 'json'
+            })
+                .done(function(data) {
+                    console.log('done');
+                    $('#ty-modal').modal('hide');
+                    console.log(data);
+                })
+                .fail(function(data) {
+                    console.log('fail');
+                    for(let key in data.responseJSON.errors) {
+                        console.log(data.responseJSON.errors[key]);
+                    }
+                });
+
+            console.log(formData);
+        } else {
+            $('#ty-modal').modal('hide');
+        }
+    }
+}
+
+class ratingFormCtrl {
+    constructor(rating_form) {
+        this.rating_form = document.getElementById('ratingsForm');
+        this.registerSubmitListener();
+    }
+
+    registerSubmitListener() {
+        this.rating_form.addEventListener('submit', e => this.formSubmitted(e))
+    }
+
+    formSubmitted(event) {
+        event.preventDefault();
+        let form = event.target;
+        let valdation_ul = document.getElementById('rating-validation-errors');
+        valdation_ul.innerHTML = '';
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
         let formData = {
-            'Q1' : q1_value,
-            'Q2' : q2_value,
-            'sampleRecipient_id' : this.sampleRecipient_id
+            'rating' : form.elements["rating"].value,
+            'comment' : form.elements["comment"].value,
+            'lang': form.elements["lang"].value,
         };
-        // $.ajax({
-        //     type: 'POST',
-        //     url: '/sample/store',
-        //     data: formData,
-        //     dataType: 'json'
-        // })
-        //     .done(function(data) {
-        //         console.log('done');
-        //         valdation_ul.innerHTML = '';
-        //         $('#spidifen-modal').modal('hide');
-        //         console.log(data);
-        //     })
-        //     .fail(function(data) {
-        //         console.log('fail');
-        //         for(let key in data.responseJSON.errors) {
-        //             valdation_ul.innerHTML += "<li>" + data.responseJSON.errors[key] + "</li>";
-        //         }
-        //     });
-        console.log(formData);
+        $.ajax({
+            type: 'POST',
+            url: '/rating/store',
+            data: formData,
+            dataType: 'json'
+        })
+            .done(function(data) {
+                // console.log('done');
+                valdation_ul.innerHTML = '';
+                // console.log(data);
+                let submitBtn = document.getElementById('rating_done');
+                submitBtn.value = "Thank you";
+                submitBtn.disabled = true;
+            })
+            .fail(function(data) {
+                // console.log('fail');
+                for(let key in data.responseJSON.errors) {
+                    valdation_ul.innerHTML += "<li>" + data.responseJSON.errors[key] + "</li>";
+                }
+            });
     }
 }
 

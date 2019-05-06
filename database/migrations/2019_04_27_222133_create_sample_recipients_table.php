@@ -14,7 +14,7 @@ class CreateSampleRecipientsTable extends Migration
     public function up()
     {
         Schema::create('sample_recipients', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->string('code');
             $table->string('fullName');
             $table->string('email');

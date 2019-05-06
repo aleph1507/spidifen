@@ -15,7 +15,7 @@ class CreateThankYousTable extends Migration
     {
         Schema::create('thank_yous', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('sampleRecipient_id')->unsigned();
+            $table->integer('sampleRecipient_id')->unsigned()->nullable();
             $table->longText('Q1')->nullable();
             $table->longText('Q2')->nullable();
             $table->foreign('sampleRecipient_id')->references('id')->on('sample_recipients')->onDelete('set null');

@@ -96,9 +96,9 @@ class sampleFormCtrl {
             'fullName' : form.elements["fullName"].value,
             'email' : form.elements["email"].value,
             'address' : form.elements["address"].value,
-            'cb1' : form.elements["cb1"].checked,
-            'cb2' : form.elements["cb2"].checked,
-            'cb3' : form.elements["cb3"].checked,
+            'cb1' : form.elements["cb1"].checked ? 1 : 0,
+            'cb2' : form.elements["cb2"].checked ? 1 : 0,
+            'cb3' : form.elements["cb3"].checked ? 1 : 0,
         };
         $.ajax({
             type: 'POST',

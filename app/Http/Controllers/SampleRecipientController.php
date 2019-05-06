@@ -40,9 +40,9 @@ class SampleRecipientController extends Controller
             'fullName' => 'required|string',
             'email' => 'required|email',
             'address' => 'required|string',
-            'cb1' => 'required|in:true,false',
-            'cb2' => 'sometimes|in:true,false',
-            'cb3' => 'sometimes|in:true,false',
+            'cb1' => 'required|in:1,0',
+            'cb2' => 'sometimes|in:1,0',
+            'cb3' => 'sometimes|in:1,0',
         ]);
 
         return response()->json(SampleRecipient::create($request->all()));

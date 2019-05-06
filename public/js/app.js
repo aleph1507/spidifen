@@ -36956,9 +36956,9 @@ function () {
         'fullName': form.elements["fullName"].value,
         'email': form.elements["email"].value,
         'address': form.elements["address"].value,
-        'cb1': form.elements["cb1"].checked,
-        'cb2': form.elements["cb2"].checked,
-        'cb3': form.elements["cb3"].checked
+        'cb1': form.elements["cb1"].checked ? 1 : 0,
+        'cb2': form.elements["cb2"].checked ? 1 : 0,
+        'cb3': form.elements["cb3"].checked ? 1 : 0
       };
       $.ajax({
         type: 'POST',
@@ -37198,8 +37198,8 @@ if (token) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/alephone/work/php/laravel/digital_orange_interview/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/alephone/work/php/laravel/digital_orange_interview/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/hristo/work/digital_orange/digital_orange_interview/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/hristo/work/digital_orange/digital_orange_interview/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
